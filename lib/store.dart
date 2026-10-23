@@ -86,15 +86,22 @@ class AppStore extends ChangeNotifier {
     if (const bool.fromEnvironment('DEMO')) {
       // Datos de ejemplo solo para tomar capturas de la ficha de tienda
       final now = DateTime.now();
-      const labels = ['Estudiar cálculo', 'Proyecto final', 'Leer capítulo 4', ''];
+      const labels = [
+        'Estudiar cálculo',
+        'Proyecto final',
+        'Leer capítulo 4',
+        '',
+      ];
       var i = 0;
       for (var d = 0; d < 9; d++) {
-        for (var k = 0; k < (d == 0 ? 3 : 2 + (d % 3)); k++) {
-          sessions.add(FocusSession(
-            end: now.subtract(Duration(days: d, hours: k * 2)),
-            minutes: 25,
-            label: labels[i++ % labels.length],
-          ));
+        for (var k = 0; k < const [3, 2, 4, 5, 1, 3, 4, 2, 3][d]; k++) {
+          sessions.add(
+            FocusSession(
+              end: now.subtract(Duration(days: d, hours: k * 2)),
+              minutes: 25,
+              label: labels[i++ % labels.length],
+            ),
+          );
         }
       }
       sessions.sort((a, b) => a.end.compareTo(b.end));

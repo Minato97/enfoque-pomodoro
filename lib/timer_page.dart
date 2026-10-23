@@ -61,6 +61,11 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _remaining = _total;
     _store.addListener(_onSettings);
+    if (const bool.fromEnvironment('DEMO')) {
+      // Solo para capturas de la ficha: arranca con el reloj ya avanzado
+      _remaining = _total - const Duration(minutes: 7, seconds: 18);
+      WidgetsBinding.instance.addPostFrameCallback((_) => _start());
+    }
   }
 
   @override
@@ -170,22 +175,24 @@ class _TimerPageState extends State<TimerPage> with WidgetsBindingObserver {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
           children: [
             for (final p in Phase.values)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: ChoiceChip(
-                  label: Text(p.label),
-                  selected: _phase == p,
-                  onSelected: _running
-                      ? null
-                      : (_) => setState(() {
-                          _phase = p;
-                          _remaining = _total;
-                        }),
-                ),
+              ChoiceChip(
+                label: Text(switch (p) {
+                  Phase.focus => 'Enfoque',
+                  Phase.shortBreak => 'Pausa corta',
+                  Phase.longBreak => 'Pausa larga',
+                }),
+                selected: _phase == p,
+                onSelected: _running
+                    ? null
+                    : (_) => setState(() {
+                        _phase = p;
+                        _remaining = _total;
+                      }),
               ),
           ],
         ),
