@@ -6,6 +6,7 @@ import 'stats_page.dart';
 import 'store.dart';
 import 'timer_page.dart';
 
+import 'app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppStore.instance.load();
@@ -22,12 +23,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Enfoque Pomodoro',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: seed, useMaterial3: true),
-      darkTheme: ThemeData(
-        colorSchemeSeed: seed,
-        brightness: Brightness.dark,
-        useMaterial3: true,
-      ),
+      theme: appTheme(seed, Brightness.light),
+      darkTheme: appTheme(seed, Brightness.dark),
       home: const HomePage(),
     );
   }
